@@ -24,3 +24,7 @@ catch(Exception $e)
         // require "./templates/404.phtml";
     }
 }
+
+// $manager = new UserManager ();
+
+// var_dump($manager->getAllUsers());

@@ -19,7 +19,7 @@ $theUsers = $query->fetchAll(PDO::FETCH_ASSOC);
  foreach($theUsers as $user){
     
     
-    $newUser = new User ($user["id"] ,$user["username"],$user["$firstName"],$user["lastName"],$user["email"]);
+    $newUser = new User ($user["id"] ,$user["username"],$user["first_name"],$user["last_name"],$user["email"]);
   
     array_push($tab,$newUser);
 }
@@ -34,11 +34,13 @@ return $tab;
 	$parameters = [
 	    "id"=>$id
 	];
-$query->execute();
+$query->execute($parameters);
 $user = $query->fetch(PDO::FETCH_ASSOC);
 
-$theUser = new User ($user["id"] ,$user["username"],$user["firstName"],$user["lastName"],$user["email"]);
+$theUser = new User ($user["id"] ,$user["username"],$user["first_name"],$user["last_name"],$user["email"]);
+
 return $theUser;
+
         }
 
     public function createUser(User $user) : User
@@ -93,7 +95,7 @@ $query->execute($parameters);
 	
 	$user = $query->fetch(PDO::FETCH_ASSOC);
 	
-	$theUser = new User ($user["id"] ,$user["username"],$user["firstName"],$user["lastName"],$user["email"]);
+	$theUser = new User ($user["id"] ,$user["username"],$user["first_name"],$user["last_name"],$user["email"]);
 	return $theUser;
 	
     }
