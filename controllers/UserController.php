@@ -36,7 +36,7 @@ foreach($users as $user){
 
       $this->render($tab);
     }
-
+// $_POST????????
   public function createUser(array $post)
     {
         // create the user in the manager

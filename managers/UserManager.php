@@ -45,8 +45,8 @@ return $theUser;
 
     public function createUser(User $user) : User
     {
-        
-    $query = $this->db->prepare('INSERT INTO categories VALUES (null, :username,:firstName,:lastName,:email)');
+        echo 'coucouss';
+    $query = $this->db->prepare('INSERT INTO users VALUES (null, :username,:firstName,:lastName,:email)');
 
     	$parameters = [
 	    "username"=>$user->getUsername(),
@@ -59,15 +59,16 @@ $query->execute($parameters);
 
 
 
- $query = $this->db->prepare('SELECT * FROM users WHERE email = :email');
+ $query2 = $this->db->prepare('SELECT * FROM users WHERE email = :email');
  	$parameters = [
-	    "email"=>$user->getEmail
+	    "email"=>$user->getEmail()
 	];
-	$query->execute($parameters);
+
+	$query2->execute($parameters);
 	
-	$user = $query->fetch(PDO::FETCH_ASSOC);
-	
-	$theUser = new User ($user["id"] ,$user["username"],$user["firstName"],$user["lastName"],$user["email"]);
+	$user = $query2->fetch(PDO::FETCH_ASSOC);
+
+	$theUser = new User ($user["id"] ,$user["username"],$user["first_name"],$user["last_name"],$user["email"]);
 	return $theUser;
 	
     }
