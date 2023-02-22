@@ -45,7 +45,7 @@ return $theUser;
 
     public function createUser(User $user) : User
     {
-        echo 'coucouss';
+       
     $query = $this->db->prepare('INSERT INTO users VALUES (null, :username,:firstName,:lastName,:email)');
 
     	$parameters = [
@@ -73,42 +73,36 @@ $query->execute($parameters);
 	
     }
 
-    public function updateUser(User $user) : User
+  public function updateUser(User $user) : User
     {
-        $query = $this->db->prepare('UPDATE users SET username =:username,firstName =:firstName,lastName =:lastName,email =:email WHERE users.id=:id');
-
-    	$parameters = [
-    	    "id"=>$user->getId(),
-	    "username"=>$user->getUsername(),
-	    "firstName"=>$user->getFirstName(),
-	    "lastName"=>$user->getLastName(),
-	    "email"=>$user->getEmail()
-	];
-	
+        $query= $this->db->prepare("UPDATE users SET username=:value2, first_name=:value3, last_name=:value4, email=:value5 WHERE id=:value1");
+        $parameters = [
+        'value1' => $user -> getId(),
+        'value2' => $user -> getUsername(),
+        'value3' => $user -> getFirstName(),
+        'value4' => $user -> getLastName(),
+        'value5' => $user -> getEmail()
+        ];
         $query->execute($parameters);
 
+        $query= $this->db->prepare("SELECT * FROM users WHERE email=:value");
+        $parameters=['value' => $user -> getEmail()];
+        $query->execute($parameters);
+        $loadedUpdatedUser = $query->fetch(PDO::FETCH_ASSOC);
 
-        $query = $this->db->prepare('SELECT * FROM users WHERE email = :email');
- 	$parameters = [
-	    "email"=>$user->getEmail()
-	];
-	$query->execute($parameters);
-	
-	$user = $query->fetch(PDO::FETCH_ASSOC);
-	
-	$theUser = new User ($user["id"] ,$user["username"],$user["first_name"],$user["last_name"],$user["email"]);
-	return $theUser;
-	
+        $loadedUpdatedUserObject=new User ($loadedUpdatedUser["id"], $loadedUpdatedUser["username"],$loadedUpdatedUser["first_name"], $loadedUpdatedUser["last_name"], $loadedUpdatedUser["email"]);
+
+        return $loadedUpdatedUserObject;
     }
-
-    public function deleteUser(User $user) : array
+    
+ public function deleteUser(int $user) : array
     {
-      $query = $this->db->prepare('DELETE * FROM users WHERE id = :id');
- 	$parameters = [
-	    "email"=>$user->getId()
-	];
-	$query->execute($parameters);
-	
-       return getAllUsers();
+        $query= $this->db->prepare("DELETE FROM users WHERE id=:value");
+        $parameters = [
+        'value' => $user,
+        ];
+        $query->execute($parameters);
+
+        return $this->getAllUsers();
     }
 }

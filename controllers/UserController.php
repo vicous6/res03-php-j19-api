@@ -36,9 +36,10 @@ foreach($users as $user){
 
       $this->render($tab);
     }
-// $_POST????????
+
   public function createUser(array $post)
     {
+        
         // create the user in the manager
         $newUser = new User(null, $post['username'], $post['firstName'], $post['lastName'], $post['email']);
         $userCreated = $this->um->createUser($newUser);
@@ -50,23 +51,27 @@ foreach($users as $user){
 
     }
 
-    public function updateUser(array $post)
+    public function updateUser(string $post)
     {
+        var_dump($_POST);
         // update the user in the manager
-        $userToUpdate = new User(intval($post['id']), $post['username'], $post['firstName'], $post['lastName'], $post['email']);
+        $userToUpdate = new User(intval($_POST['id']), $_POST['username'], $_POST['firstName'], $_POST['lastName'], $_POST['email']);
+       var_dump($userToUpdate);
         $this->um->updateUser($userToUpdate);
-
+echo 'manager passé';
         $userTab = $userToUpdate->toArray();
+var_dump($userTab);
 
         // render the updated user
         $this->render($userTab);
 
     }
 
-    public function deleteUser(array $post)
+    public function deleteUser(string $post)
     {
+        
         // delete the user in the manager
-        $this->um->deleteUser(intval($post['id']));
+        $this->um->deleteUser(intval($post));
 
         // render the list of all users
         $this->render(['users' => $this->um->getAllUsers()]);
